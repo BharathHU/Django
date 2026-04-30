@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookMyShow</title>
+    <link rel="stylesheet" href="[cdnjs.cloudflare.com](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #dc3558;
+            --secondary-color: #333545;
+            --bg-dark: #1a1a2e;
+            --bg-light: #f5f5f5;
+            --text-dark: #333;
+            --text-light: #999;
+            --white: #fff;
+            --gradient: linear-gradient(90deg, #dc3558 0%, #f05537 100%);
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .header {
+            background: var(--secondary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 5%;
+            gap: 20px;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            height: 32px;
+        }
+
+        .logo-text {
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-text span {
+            color: var(--primary-color);
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--white);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .location select {
+            background: transparent;
+            border: none;
+            color: var(--white);
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .location select option {
+            color: var(--text-dark);
+        }
+
+        .sign-in-btn {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .sign-in-btn:hover {
+            background: #c42d4d;
+        }
+
+        .menu-icon {
+            display: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .header-nav {
+            background: var(--secondary-color);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-left a {
+            color: var(--white);
+            font-size: 13px;
+            padding: 12px 0;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .nav-left a:hover,
+        .nav-left a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-left a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-right a {
+            color: var(--text-light);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+        }
+
+        .nav-right a:hover {
+            color: var(--white);
+        }
+
+        #menu-toggle {
+            display: none;
+        }
+
+        .hero-carousel {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, var(--secondary-color) 50%, var(--bg-light) 50%);
+        }
+
+        .carousel-container {
+            display: flex;
+            animation: slide 20s infinite;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            padding: 20px 5%;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .carousel-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        @keyframes slide {
+            0%, 20% { transform: translateX(0); }
+            25%, 45% { transform: translateX(-100%); }
+            50%, 70% { transform: translateX(-200%); }
+            75%, 95% { transform: translateX(-300%); }
+            100% { transform: translateX(0); }
+        }   
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px 0;
+            background: var(--bg-light);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot:hover,
+        .dot.active {
+            background: var(--primary-color);
+        }
+
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .quick-link {
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .quick-link:hover {
+            transform: translateY(-5px);
+        }
+
+        .quick-link-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 28px;
+            color: var(--white);
+        }
+
+        .quick-link:nth-child(1) .quick-link-icon { background: linear-gradient(135deg, #ff6b6b, #ee5253); }
+        .quick-link:nth-child(2) .quick-link-icon { background: linear-gradient(135deg, #48dbfb, #0abde3); }
+        .quick-link:nth-child(3) .quick-link-icon { background: linear-gradient(135deg, #ff9ff3, #f368e0); }
+        .quick-link:nth-child(4) .quick-link-icon { background: linear-gradient(135deg, #feca57, #ff9f43); }
+        .quick-link:nth-child(5) .quick-link-icon { background: linear-gradient(135deg, #5f27cd, #341f97); }
+        .quick-link:nth-child(6) .quick-link-icon { background: linear-gradient(135deg, #1dd1a1, #10ac84); }
+
+        .quick-link span {
+            font-size: 13px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .see-all {
+            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .filter-btn i {
+            font-size: 10px;
+        }
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .movie-card {
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .movie-poster {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 2/3;
+        }
+
+        .movie-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .poster-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+        }
+
+        .movie-card:nth-child(1) .poster-placeholder { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .movie-card:nth-child(2) .poster-placeholder { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .movie-card:nth-child(3) .poster-placeholder { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .movie-card:nth-child(4) .poster-placeholder { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .movie-card:nth-child(5) .poster-placeholder { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .movie-card:nth-child(6) .poster-placeholder { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+        .movie-card:nth-child(7) .poster-placeholder { background: linear-gradient(135deg, #d299c2, #fef9d7); }
+        .movie-card:nth-child(8) .poster-placeholder { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+        .movie-card:nth-child(9) .poster-placeholder { background: linear-gradient(135deg, #fddb92, #d1fdff); }
+        .movie-card:nth-child(10) .poster-placeholder { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
+
+        .movie-rating {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            color: var(--white);
+            font-size: 13px;
+        }
+
+        .movie-rating i {
+            color: #f84464;
+            margin-right: 5px;
+        }
+
+        .movie-info {
+            padding: 10px 0;
+        }
+
+        .movie-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .movie-genre {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        .events-section {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .event-card {
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .event-poster {
+            aspect-ratio: 3/4;
+            position: relative;
+        }
+
+        .event-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .event-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--white);
+        }
+
+        .event-card:nth-child(1) .event-placeholder { background: linear-gradient(135deg, #ff0844, #ffb199); }
+        .event-card:nth-child(2) .event-placeholder { background: linear-gradient(135deg, #6a11cb, #2575fc); }
+        .event-card:nth-child(3) .event-placeholder { background: linear-gradient(135deg, #f7971e, #ffd200); }
+        .event-card:nth-child(4) .event-placeholder { background: linear-gradient(135deg, #00c6fb, #005bea); }
+
+        .event-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .event-info {
+            padding: 15px;
+            background: var(--white);
+        }
+
+        .event-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .event-details {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Live Events Banner */
+        .live-events-banner {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .banner-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .banner-content h2 {
+            color: var(--white);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .banner-btn {
+            display: inline-block;
+            background: var(--gradient);
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .banner-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(220, 53, 88, 0.4);
+        }
+
+        .banner-image {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            box-shadow: 0px 0px 5px;
+        }
+
+        .banner-card {
+            width: 150px;
+            height: 200px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+        }
+
+        .banner-card:nth-child(1) { background: linear-gradient(135deg, #ff416c, #ff4b2b); transform: rotate(-5deg); }
+        .banner-card:nth-child(2) { background: linear-gradient(135deg, #8e2de2, #4a00e0); transform: rotate(5deg); }
+
+        /* Premiere Section */
+        .premiere-section {
+            margin-bottom: 40px;
+        }
+
+        .premiere-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .premiere-badge {
+            background: linear-gradient(90deg, #1a1a2e, #333545);
+            color: var(--white);
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .app-btn img {
+    width: 140px;
+    height: auto;
+    object-fit: contain;
+}
+.quick-link-icon img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.app-btn {
+    background: transparent;
+    padding: 0;
+}
+
+        .premiere-header p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .premiere-scroll {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .premiere-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .premiere-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .premiere-scroll::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .premiere-card {
+            min-width: 250px;
+            scroll-snap-align: start;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .premiere-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .premiere-poster {
+            aspect-ratio: 16/9;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .premiere-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .premiere-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .premiere-card:nth-child(1) .premiere-placeholder { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .premiere-card:nth-child(2) .premiere-placeholder { background: linear-gradient(135deg, #fc4a1a, #f7b733); }
+        .premiere-card:nth-child(3) .premiere-placeholder { background: linear-gradient(135deg, #7f00ff, #e100ff); }
+        .premiere-card:nth-child(4) .premiere-placeholder { background: linear-gradient(135deg, #f12711, #f5af19); }
+        .premiere-card:nth-child(5) .premiere-placeholder { background: linear-gradient(135deg, #00b09b, #96c93d); }
+
+        .premiere-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 20px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .premiere-card:hover .premiere-play {
+            opacity: 1;
+        }
+
+        .premiere-info {
+            padding: 10px 0;
+        }
+
+        .premiere-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .premiere-lang {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Offers Section */
+        .offers-section {
+            margin-bottom: 40px;
+        }
+
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .offer-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .offer-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .offer-image {
+            width: 120px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .offer-card:nth-child(1) .offer-image { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+        .offer-card:nth-child(2) .offer-image { background: linear-gradient(135deg, #5f27cd, #341f97); }
+        .offer-card:nth-child(3) .offer-image { background: linear-gradient(135deg, #ff6b6b, #ee5253); }
+
+        .offer-content {
+            padding: 20px;
+        }
+
+        .offer-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .offer-desc {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .offer-code {
+            display: inline-block;
+            border: 1px dashed var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .social-links a img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.social-links a:hover {
+    background: #dc3558;
+}
+        /* ============ FOOTER ============ */
+        .footer {
+            background: var(--secondary-color);
+            color: var(--white);
+            padding: 50px 5% 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--text-light);
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+        }
+
+        .app-downloads {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .app-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .app-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .app-btn i {
+            font-size: 20px;
+        }
+
+        .app-btn span {
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
+        .app-btn strong {
+            font-size: 13px;
+            display: block;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .footer-bottom p {
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .payment-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .payment-icons i {
+            font-size: 24px;
+            color: var(--text-light);
+        }
+        .section-title img {
+    width: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.offer-image {
+    width: 120px;
+    height: 100%;   /* important */
+    overflow: hidden;
+}
+
+.offer-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* 🔥 makes image fill completely */
+}
+
+        /* ============ RESPONSIVE STYLES ============ */
+        @media (max-width: 1200px) {
+            .movies-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .movies-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .events-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .offers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-top {
+                flex-wrap: wrap;
+            }
+
+            .search-box {
+                order: 3;
+                max-width: 100%;
+                flex-basis: 100%;
+                margin-top: 10px;
+            }
+
+            .header-right {
+                gap: 10px;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+                max-height: 0;
+                overflow: hidden;
+                transition: 0.3s;
+            }
+
+            #menu-toggle:checked ~ .header-nav .nav-container {
+                max-height: 500px;
+                padding: 15px 5%;
+            }
+
+            .nav-left,
+            .nav-right {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .nav-left a {
+                padding: 8px 0;
+            }
+
+            .movies-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .quick-links {
+                gap: 20px;
+            }
+
+            .quick-link-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 22px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .live-events-banner {
+                padding: 25px;
+            }
+
+            .banner-content h2 {
+                font-size: 22px;
+            }
+
+            .offers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .offer-card {
+                flex-direction: column;
+            }
+
+            .offer-image {
+                width: 100%;
+                height: 100px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-top {
+                padding: 10px 3%;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            .sign-in-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .location {
+                display: none;
+            }
+
+            .movies-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .movie-title {
+                font-size: 14px;
+            }
+
+            .movie-genre {
+                font-size: 11px;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-links {
+                justify-content: space-between;
+                gap: 10px;
+            }
+
+            .quick-link-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+
+            .quick-link span {
+                font-size: 11px;
+            }
+
+            .banner-image {
+                display: none;
+            }
+
+            .premiere-card {
+                min-width: 200px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .carousel-placeholder {
+                height: 200px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Selection Color */
+        ::selection {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <input type="checkbox" id="menu-toggle">
+        <div class="header-top">
+            <div class="logo">
+                <a href="#" class="logo-text">book<span>my</span>show</a>
+            </div>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search for Movies, Events, Plays, Sports and Activities">
+            </div>
+            
+            <div class="header-right">
+                <div class="location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <select>
+                        <option>Bengaluru</option>
+                        <option>Delhi-NCR</option>
+                        <option>Mumbai</option>
+                        <option>Hyderabad</option>
+                        <option>Chennai</option>
+                        <option>Kolkata</option>
+                        <option>Pune</option>
+                    </select>
+                </div>
+                <a href="#" class="sign-in-btn">Sign in</a>
+                <label for="menu-toggle" class="menu-icon">
+                    <i class="fas fa-bars"></i>
+                </label>
+            </div>
+        </div>
+        
+        <nav class="header-nav">
+            <div class="nav-container">
+                <div class="nav-left">
+                    <a href="#" class="active">Movies</a>
+                    <a href="#">Stream</a>
+                    <a href="#">Events</a>
+                    <a href="#">Plays</a>
+                    <a href="#">Sports</a>
+                    <a href="#">Activities</a>
+                </div>
+                <div class="nav-right">
+                    <a href="#"><i class="fas fa-gift"></i> ListYourShow</a>
+                    <a href="#"><i class="fas fa-building"></i> Corporates</a>
+                    <a href="#"><i class="fas fa-ticket-alt"></i> Offers</a>
+                    <a href="#"><i class="fas fa-gift"></i> Gift Cards</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Carousel -->
+    <section class="hero-carousel">
+        <div class="carousel-container">
+            <div class="carousel-slide">
+    <img src="https://assets-in-gm.bmscdn.com/promotions/cms/creatives/1773749430986_shaanweb.jpeg">
+</div>
+
+<div class="carousel-slide">
+    <img src="https://assets-in-gm.bmscdn.com/promotions/cms/creatives/1772200374412_blr.jpg">
+</div>
+
+<div class="carousel-slide">
+    <img src="https://assets-in-gm.bmscdn.com/promotions/cms/creatives/1772444343674_themessiexperienceindiawebshowcase1240x300bengluru.jpg">
+</div>
+
+<div class="carousel-slide">
+    <img src="https://assets-in-gm.bmscdn.com/promotions/cms/creatives/1771327276432_popdesktop.jpg">
+</div>
+        </div>
+        <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Quick Links -->
+      <section class="quick-links">
+
+    <div class="quick-link">
+        <div class="quick-link-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/833/833281.png">
+        </div>
+        <span>Movies</span>
+    </div>
+
+    <div class="quick-link">
+        <div class="quick-link-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+        </div>
+        <span>Stream</span>
+    </div>
+
+    <div class="quick-link">
+        <div class="quick-link-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/747/747310.png">
+        </div>
+        <span>Events</span>
+    </div>
+
+    <div class="quick-link">
+        <div class="quick-link-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png">
+        </div>
+        <span>Plays</span>
+    </div>
+
+    <div class="quick-link">
+        <div class="quick-link-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/857/857418.png">
+        </div>
+        <span>Sports</span>
+    </div>
+
+    <div class="quick-link">
+        <div class="quick-link-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png">
+        </div>
+        <span>Activities</span>
+    </div>
+
+</section>
+        <!-- Recommended Movies -->
+        <section class="movies-section">
+            <div class="section-header">
+                <h2 class="section-title">Recommended Movies</h2>
+                <a href="#" class="see-all">See All ›</a>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active">Hindi</button>
+                <button class="filter-btn">English</button>
+                <button class="filter-btn">Telugu</button>
+                <button class="filter-btn">Tamil</button>
+                <button class="filter-btn">Kannada</button>
+                <button class="filter-btn"><i class="fas fa-chevron-down"></i> More</button>
+            </div>
+            
+            <div class="movies-grid">
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://m.media-amazon.com/images/M/MV5BZjllNTdiM2QtYjQ0Ni00ZGM1LWFlYmUtNWY0YjMzYWIxOTYxXkEyXkFqcGc@._V1_.jpg" alt="Pushpa 2">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 92% • 45.2K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Pushpa 2: The Rule</h3>
+                        <p class="movie-genre">Action/Thriller</p>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://mlpnk72yciwc.i.optimole.com/cqhiHLc.IIZS~2ef73/w:auto/h:auto/q:75/https://bleedingcool.com/wp-content/uploads/2024/11/mufasa_the_lion_king_ver7_xlg.jpg" alt="Mufasa: The Lion King">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 88% • 32.1K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Mufasa: The Lion King</h3>
+                        <p class="movie-genre">Animation/Adventure</p>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://fr.web.img3.acsta.net/img/bf/75/bf759d8af9d0eb3b279a802b179ae4cb.jpg" alt="Kraven The Hunter">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 85% • 28.5K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Kraven The Hunter</h3>
+                        <p class="movie-genre">Action/Adventure</p>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://m.media-amazon.com/images/M/MV5BMDNkZmZlOWEtMjIxYS00MzMwLTg4ODYtMDRmNzY2NjY3NDdkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Marco">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 90% • 55.3K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Marco</h3>
+                        <p class="movie-genre">Action/Drama</p>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://m.media-amazon.com/images/M/MV5BNWJjODJlMjItNDVmOC00MjIzLWIwYTgtYmVhMGMyYWFkMmFjXkEyXkFqcGc@._V1_.jpg" alt="Bhool Bhulaiyaa 3">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 78% • 15.2K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Bhool Bhulaiyaa 3</h3>
+                        <p class="movie-genre">Comedy/Horror</p>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://image.tmdb.org/t/p/original/2JbNkHg8m7LaBy61LyrnnlenaxY.jpg" alt="Singham Again">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 82% • 22.8K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Singham Again</h3>
+                        <p class="movie-genre">Action/Thriller</p>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://m.media-amazon.com/images/M/MV5BYTY1YzNlMDktZjZjZS00YWQ1LTkzYjYtOGNiNDA5NWFlYTY1XkEyXkFqcGc@._V1_.jpg" alt="The Sabarmati Report">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 75% • 18.4K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Sabarmati Report</h3>
+                        <p class="movie-genre">Drama/Thriller</p>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://lumiere-a.akamaihd.net/v1/images/image_25b12a37.jpeg?region=0,0,540,810" alt="Moana 2">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 87% • 35.6K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Moana 2</h3>
+                        <p class="movie-genre">Animation/Adventure</p>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://image.tmdb.org/t/p/original/kXmpB6xDj34l03s8YG4gFIF1Rgl.jpg" alt="Gladiator II">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 79% • 12.1K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Gladiator II</h3>
+                        <p class="movie-genre">Action/Drama</p>
+                    </div>
+                </div>
+                
+                <div class="movie-card">
+                    <div class="movie-poster">
+                        <img src="https://m.media-amazon.com/images/M/MV5BN2Q4Yjk0YTQtZjYyMC00YTczLWFhZDktOWQyYzRlYzgwMWM1XkEyXkFqcGc@._V1_.jpg" alt="Wicked">
+                        <div class="movie-rating"><i class="fas fa-heart"></i> 84% • 25.9K Votes</div>
+                    </div>
+                    <div class="movie-info">
+                        <h3 class="movie-title">Wicked</h3>
+                        <p class="movie-genre">Musical/Fantasy</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Events Banner -->
+        <section class="live-events-banner">
+            <div class="banner-content">
+                <h2>Live Events & Experiences</h2>
+                <p>Discover amazing events happening around you. Book concerts, comedy shows, workshops and more!</p>
+                <a href="#" class="banner-btn">Explore Events</a>
+            </div>
+            <div class="banner-image">
+    <div class="banner-card">
+        <img src="https://www.voicesofwrestling.com/wp-content/uploads/2022/08/Image-from-iOS-2-1.jpg" alt="Concert">
+    </div>
+    <div class="banner-card">
+        <img src="https://live.staticflickr.com/2809/12959216374_836b5e0fa2.jpg" alt="Music Event">
+    </div>
+</div>
+        </section>
+
+        <!-- Best Events -->
+        <section class="events-section">
+            <div class="section-header">
+                <h2 class="section-title">The Best of Live Events</h2>
+                <a href="#" class="see-all">See All ›</a>
+            </div>
+            
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-poster">
+                    <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063">                        
+                    <span class="event-badge">TRENDING</span>
+                    </div>
+                    <div class="event-info">
+                        <h3 class="event-title">Arijit Singh Live in Concert</h3>
+                        <p class="event-details">Dec 28 • Mumbai</p>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-poster">
+                    <img src="https://images.unsplash.com/photo-1527224538127-2104bb71c51b">                        
+                    <span class="event-badge">NEW</span>
+                    </div>
+                    <div class="event-info">
+                        <h3 class="event-title">Comedy Night with Zakir Khan</h3>
+                        <p class="event-details">Jan 5 • Delhi</p>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-poster">
+                        <img src="https://images.unsplash.com/photo-1503095396549-807759245b35">
+                    </div>
+                    <div class="event-info">
+                        <h3 class="event-title">Broadway Musical: Hamilton</h3>
+                        <p class="event-details">Jan 10-15 • Bengaluru</p>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-poster">
+                        <img src="https://awff.gr/assets/imgs/blog/post-aff-2024.jpg">
+                    </div>
+                    <div class="event-info">
+                        <h3 class="event-title">Fitness Festival 2024</h3>
+                        <p class="event-details">May 25-26 • Hyderabad</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Premiere Section -->
+        <section class="premiere-section">
+            <div class="section-header">
+                <div class="premiere-header">
+                    <span class="premiere-badge">PREMIERE</span>
+                    <p>Brand new releases every Friday</p>
+                </div>
+                <a href="#" class="see-all">See All ›</a>
+            </div>
+            
+            <div class="premiere-scroll">
+                <div class="premiere-card">
+                    <div class="premiere-poster">
+                    <img src="https://tse2.mm.bing.net/th/id/OIP.78_iCo6yC6DT2NB2FTP8JwHaEK?pid=Api&P=0&h=180">
+                        <div class="premiere-play"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="premiere-info">
+                        <h3 class="premiere-title">The Night Manager</h3>
+                        <p class="premiere-lang">Hindi • Thriller</p>
+                    </div>
+                </div>
+                
+                <div class="premiere-card">
+                    <div class="premiere-poster">
+                        <img src="https://tse4.mm.bing.net/th/id/OIP.D57VlNt_p8j6DHWD_DhJXgHaFj?pid=Api&P=0&h=180f">
+                        <div class="premiere-play"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="premiere-info">
+                        <h3 class="premiere-title">Farzi</h3>
+                        <p class="premiere-lang">Hindi • Crime</p>
+                    </div>
+                </div>
+                
+                <div class="premiere-card">
+                    <div class="premiere-poster">
+                        <img src="https://i.cdn.newsbytesapp.com/images/l320230503152002.jpeg">
+                        <div class="premiere-play"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="premiere-info">
+                        <h3 class="premiere-title">Dahaad</h3>
+                        <p class="premiere-lang">Hindi • Drama</p>
+                    </div>
+                </div>
+                
+                <div class="premiere-card">
+                    <div class="premiere-poster">
+                        <img src="https://www.financialexpress.com/wp-content/uploads/2023/08/Untitled-design-21.png">
+                        <div class="premiere-play"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="premiere-info">
+                        <h3 class="premiere-title">Guns & Gulaabs</h3>
+                        <p class="premiere-lang">Hindi • Comedy</p>
+                    </div>
+                </div>
+                
+                <div class="premiere-card">
+                    <div class="premiere-poster">
+                    <img src="https://images.plex.tv/photo?size=large-1280&url=https:%2F%2Fmetadata-static.plex.tv%2F0%2Fgracenote%2F0f1e0b0f88c10f07a447e76496135d41.jpg">                  
+                          <div class="premiere-play"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="premiere-info">
+                        <h3 class="premiere-title">Kohrra</h3>
+                        <p class="premiere-lang">Punjabi • Thriller</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Offers Section -->
+        <section class="offers-section">
+            <div class="section-header">
+                <h2 class="section-title">
+    <img src="https://cdn-icons-png.flaticon.com/512/3523/3523887.png">
+    Offers For You
+</h2>
+                <a href="#" class="see-all">See All ›</a>
+            </div>
+            
+            <div class="offers-grid">
+
+    <!-- HDFC Offer -->
+    <div class="offer-card">
+        <div class="offer-image">
+            <img src="https://static.vecteezy.com/system/resources/previews/020/190/432/original/hdfc-logo-hdfc-icon-free-free-vector.jpg" alt="HDFC">
+        </div>
+        <div class="offer-content">
+            <h3 class="offer-title">HDFC Bank Credit Card</h3>
+            <p class="offer-desc">Get 15% off up to ₹150 on movie tickets</p>
+            <span class="offer-code">Use code: HDFC15</span>
+        </div>
+    </div>
+
+    <!-- PayTM Offer -->
+    <div class="offer-card">
+        <div class="offer-image">
+            <img src="https://pwebassets.paytm.com/commonwebassets/ir/images/press-kit/brand.png" alt="PayTM">
+        </div>
+        <div class="offer-content">
+            <h3 class="offer-title">PayTM Wallet Offer</h3>
+            <p class="offer-desc">Flat ₹100 cashback on first booking</p>
+            <span class="offer-code">Use code: PAYTM100</span>
+        </div>
+    </div>
+
+    <!-- Group Offer -->
+    <div class="offer-card">
+        <div class="offer-image">
+            <img src="https://img.happyeasygo.com/www/static/img/06f945224fa8d3c2924da76796e04963.png" alt="Group">
+        </div>
+        <div class="offer-content">
+            <h3 class="offer-title">Group Booking Offer</h3>
+            <p class="offer-desc">Book 4+ tickets and get 20% off</p>
+            <span class="offer-code">Use code: GROUP20</span>
+        </div>
+    </div>
+
+</div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h3>Movies Now Showing</h3>
+                <ul>
+                    <li><a href="#">Pushpa 2: The Rule</a></li>
+                    <li><a href="#">Mufasa: The Lion King</a></li>
+                    <li><a href="#">Kraven The Hunter</a></li>
+                    <li><a href="#">Marco</a></li>
+                    <li><a href="#">Bhool Bhulaiyaa 3</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Upcoming Movies</h3>
+                <ul>
+                    <li><a href="#">Devara Part 2</a></li>
+                    <li><a href="#">Salar Part 2</a></li>
+                    <li><a href="#">Pathaan 2</a></li>
+                    <li><a href="#">Tiger 4</a></li>
+                    <li><a href="#">War 2</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Help</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Current Openings</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>BookMyShow Exclusives</h3>
+                <ul>
+                    <li><a href="#">Offers</a></li>
+                    <li><a href="#">Stream</a></li>
+                    <li><a href="#">Buzz</a></li>
+                    <li><a href="#">Gift Cards</a></li>
+                </ul>
+                
+                <div class="social-links">
+                    <a href="#">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook">
+</a>
+
+<a href="#">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter">
+</a>
+
+<a href="#">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram">
+</a>
+
+<a href="#">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733646.png" alt="YouTube">
+</a>
+
+<a href="#">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733561.png" alt="LinkedIn">
+</a>
+                </div>
+                
+               <div class="app-downloads">
+
+    <a href="#" class="app-btn">
+        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store">
+    </a>
+
+    <a href="#" class="app-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play">
+    </a>
+
+</div>
+        
+        <div class="footer-bottom">
+            <p> <h3>&copy;2024 All Rights Reserved, By Bharath H U</h3></p>
+            <div class="payment-icons">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-paypal"></i>
+                <i class="fab fa-google-pay"></i>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
