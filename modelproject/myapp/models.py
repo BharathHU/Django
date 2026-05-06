@@ -8,3 +8,6 @@ class Student(models.Model):
     email=models.EmailField()
     place=models.CharField(max_length=100)
     dob=models.DateField()
+
+    def __str__(self):
+        return self.name
