@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+            .body{
+            background-color: darkgoldenrod;
+            }
+        .one{
+            background-color: aquamarine;
+            border-color:  4px solid black;
+            box-shadow: 0px 0px 5px 3px ;
+            border-radius: 5px solid whitesmoke;
+            overflow-y: scroll;
+            white-space: nowrap;
+            height: 100px;
+        }
+        .one:hover{
+            transform: scale(1.08);
+            background-color: yellow;
+            font-style: italic;
+            border-radius: 9px;
+            align-items: center;
+            text-align: center;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body class="body">
+    <div class="one">
+        <h1>Conversation between me and my friend:</h1>
+        <h3>{{name1}}:Hi how are you {{name2}}</h3>
+        <h3>{{name2}}:yeah! i'm good,what about you</h3>
+        <h3>{{name1}}: I am good, how about your Dinner planning, where is the location?</h3>
+        <h3>{{name2}}: {{place}}</h3>
+        <h3>{{name1}}: ok enjoy,bye take care</h3>
+</div>
+</body>
+</html>
