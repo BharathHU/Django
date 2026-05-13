@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Products</title>
+
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body{
+            min-height: 100vh;
+            padding: 40px 20px;
+
+            background: linear-gradient(-45deg,#0f172a,#1e3a8a,#2563eb,#38bdf8);
+            background-size: 400% 400%;
+
+            animation: gradientBG 10s ease infinite;
+        }
+
+        @keyframes gradientBG{
+
+            0%{
+                background-position: 0% 50%;
+            }
+
+            50%{
+                background-position: 100% 50%;
+            }
+
+            100%{
+                background-position: 0% 50%;
+            }
+        }
+
+        .container{
+            max-width: 1300px;
+            margin: auto;
+
+            animation: zoomContainer 1.5s ease;
+        }
+
+        @keyframes zoomContainer{
+
+            0%{
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            100%{
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .title{
+            text-align: center;
+            font-size: 50px;
+            margin-bottom: 40px;
+            color: white;
+            font-weight: bold;
+            letter-spacing: 2px;
+
+            animation: crazyGlow 2s infinite alternate;
+        }
+
+        @keyframes crazyGlow{
+
+            0%{
+                text-shadow:
+                0 0 10px white,
+                0 0 20px #38bdf8,
+                0 0 40px #2563eb;
+
+                transform: scale(1);
+            }
+
+            100%{
+                text-shadow:
+                0 0 20px white,
+                0 0 40px #38bdf8,
+                0 0 80px #2563eb;
+
+                transform: scale(1.08);
+            }
+        }
+
+        .table-container{
+
+            overflow-x: auto;
+
+            background: rgba(255,255,255,0.12);
+
+            backdrop-filter: blur(15px);
+
+            border-radius: 25px;
+
+            padding: 20px;
+
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+            animation: floatingTable 4s ease-in-out infinite;
+        }
+
+        @keyframes floatingTable{
+
+            0%{
+                transform: translateY(0px);
+            }
+
+            50%{
+                transform: translateY(-10px);
+            }
+
+            100%{
+                transform: translateY(0px);
+            }
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        th{
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 20px;
+
+            font-size: 18px;
+
+            text-align: left;
+
+            animation: headerGlow 2s infinite alternate;
+        }
+
+        @keyframes headerGlow{
+
+            0%{
+                background: #2563eb;
+            }
+
+            100%{
+                background: #1d4ed8;
+            }
+        }
+
+        td{
+
+            padding: 20px;
+
+            color: white;
+
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+
+            vertical-align: middle;
+        }
+
+        tr{
+
+            transition: 0.5s;
+
+            animation: slideRow 1s ease;
+        }
+
+        @keyframes slideRow{
+
+            0%{
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+
+            100%{
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        tr:hover{
+
+            transform: scale(1.02);
+
+            background: rgba(255,255,255,0.15);
+
+            backdrop-filter: blur(8px);
+
+            box-shadow: 0 0 25px rgba(255,255,255,0.2);
+        }
+
+        .product-img{
+
+            width: 100px;
+
+            height: 100px;
+
+            object-fit: cover;
+
+            border-radius: 15px;
+
+            transition: 0.5s;
+
+            animation: rotateFloat 5s ease-in-out infinite;
+        }
+
+        @keyframes rotateFloat{
+
+            0%{
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            25%{
+                transform: translateY(-10px) rotate(4deg);
+            }
+
+            50%{
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            75%{
+                transform: translateY(10px) rotate(-4deg);
+            }
+
+            100%{
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        .product-img:hover{
+
+            transform: scale(1.2) rotate(10deg);
+
+            box-shadow:
+            0 0 20px #38bdf8,
+            0 0 40px #2563eb,
+            0 0 60px #1d4ed8;
+        }
+
+        .price{
+
+            color: #22c55e;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            animation: blinkPrice 1s infinite alternate;
+        }
+
+        @keyframes blinkPrice{
+
+            0%{
+                transform: scale(1);
+                color: #22c55e;
+            }
+
+            100%{
+                transform: scale(1.15);
+                color: #4ade80;
+            }
+        }
+
+        .description{
+
+            max-width: 350px;
+
+            line-height: 1.7;
+        }
+
+        .btn{
+
+            text-decoration: none;
+
+            background: #111827;
+
+            color: white;
+
+            padding: 12px 22px;
+
+            border-radius: 10px;
+
+            display: inline-block;
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition: 0.5s;
+
+            animation: pulseBtn 2s infinite;
+        }
+
+        @keyframes pulseBtn{
+
+            0%{
+                box-shadow: 0 0 0px rgba(37,99,235,0.5);
+            }
+
+            50%{
+                box-shadow: 0 0 25px rgba(37,99,235,1);
+            }
+
+            100%{
+                box-shadow: 0 0 0px rgba(37,99,235,0.5);
+            }
+        }
+
+        .btn::after{
+
+            content: "";
+
+            position: absolute;
+
+            top: -100%;
+
+            left: -100%;
+
+            width: 200%;
+
+            height: 200%;
+
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255,255,255,0.5),
+                transparent
+            );
+
+            transform: rotate(25deg);
+
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine{
+
+            0%{
+                left: -100%;
+            }
+
+            100%{
+                left: 100%;
+            }
+        }
+
+        .btn:hover{
+
+            transform: translateY(-8px) scale(1.1);
+
+            background: #3b82f6;
+        }
+
+        @media(max-width:768px){
+
+            .title{
+                font-size: 35px;
+            }
+
+            th,
+            td{
+                padding: 14px;
+                font-size: 14px;
+            }
+
+            .product-img{
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1 class="title">Our Products</h1>
+
+        <div class="table-container">
+
+            <table>
+
+                <tr>
+
+                    <th>Product Image</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Action</th>
+
+                </tr>
+
+                {% for i in products %}
+
+                <tr>
+
+                    <td>
+                        <img src="{{ i.image.url }}" alt="{{ i.name }}" class="product-img">
+                    </td>
+
+                    <td>
+                        <strong>{{ i.name }}</strong>
+                    </td>
+
+                    <td class="price">
+                        ₹{{ i.price }}
+                    </td>
+
+                    <td class="description">
+                        {{ i.description }}
+                    </td>
+
+                    <td>
+
+                        <a href="#" class="btn">
+                            View Details
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
