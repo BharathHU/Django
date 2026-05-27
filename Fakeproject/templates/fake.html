@@ -39,7 +39,7 @@
             transform:scale(1.05);
             border-radius: 20px;
             animation: none;
-        }
+            font-weight:lighter;        }
         th, td {
             padding: 8px;
             text-align: left;
@@ -131,15 +131,6 @@ color: white;
                 transform:scale(1);
                 
             }
-
-
-
-
-
-
-
-
-
         }
 
     </style>
@@ -148,12 +139,12 @@ color: white;
     <center><h1>Employee Details</h1>
     <table border="1">
         <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Place</th>
-            <th>Position</th>
-            <th>Salary</th>
+            <th class="name">Name</th>
+            <th class="email">Email</th>
+            <th class="department">Department</th>
+            <th class="place">Place</th>
+            <th class="position">Position</th>
+            <th class="salary">Salary</th>
 
         </tr>
         {% for employee in employees %}
