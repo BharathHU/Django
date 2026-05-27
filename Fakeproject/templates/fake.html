@@ -8,7 +8,7 @@
         h1{
             transition:0.5s;
             transform:scale(1.2);
-             animation: ani1 8s infinite;
+             /* animation: ani1 8s infinite; */
              animation-timing-function: ease-in-out;
              animation-direction:alternate;
              ANIMATION-ITERATION-COUNT:INFINITE;
@@ -36,7 +36,7 @@
         table:hover{
             box-shadow:0px 0px 5px 3px black;
             transition:0.5s;
-            transform:scale(1.05);
+            transform:scale(1.02);
             border-radius: 20px;
             animation: none;
             font-weight:lighter;        }
@@ -132,19 +132,31 @@ color: white;
                 
             }
         }
-
+.head{
+    color: pink;
+    text-shadow: 2px 1px 2px black;
+    font-weight: bolder;
+    font-size:xx-large;
+}
     </style>
 </head>
 <body>
+    <div class="container">
     <center><h1>Employee Details</h1>
+        </center>
+    </div>
+    <div class="main">
+        <center>
     <table border="1">
-        <tr>
+        <tr class="head">
+            <div>
             <th class="name">Name</th>
             <th class="email">Email</th>
             <th class="department">Department</th>
             <th class="place">Place</th>
             <th class="position">Position</th>
             <th class="salary">Salary</th>
+            </div>
 
         </tr>
         {% for employee in employees %}
