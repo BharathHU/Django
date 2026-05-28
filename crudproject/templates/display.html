@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: pink;
+        }
+        .container{
+            background-color:whitesmoke;
+            color:black;
+            width:95%;
+
+        }
+        h1{
+            color:blue;
+            text-shadow: 2px 2px 5px red;
+        }
+    </style>
+</head>
+<body>
+    
+    <center>
+        
+        <h1>Employee Table</h1>
+<div class="container">
+        <table border="2">
+            
+            
+            <tr >
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Place</th>
+                <th>Job</th>
+                <th>Salary</th>
+                <th>Actions</th>
+                
+
+            </tr>
+            
+             
+            {% for i in emp %}
+            <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.name}}</td>
+                <td>{{i.age}}</td>
+                <td>{{i.email}}</td>
+                <td>{{i.place}}</td>
+                <td>{{i.job}}</td>
+                <td>{{i.salary}}</td>
+
+                <td><a href="">Update</a>
+                <a href="">Delete</a></td>
+
+            </tr>
+            {% endfor %}
+        </div>
+        </div>
+        </table>
+         
+       
+
+    </center>
+    
+    
+   
+</body>
+</html>
