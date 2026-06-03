@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('student/',Studentlist.as_view(),name='student'),
     path('<int:pk>/',StudentDetails.as_view(),name='detail'),
-    path('update/<int:pk>/',StudentUpdate.as_view(),name='update')
+    path('update/<int:pk>/',StudentUpdate.as_view(),name='update'),
+    path('delete/<int:pk>/', StudentDelete.as_view(), name='delete')
 ]
 
